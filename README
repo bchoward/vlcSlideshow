@@ -1,0 +1,38 @@
+
+
+
+This script is designed to create a video slideshow, perfect for background entertainment, parties, etc.  Basically, you point it to any number of directories, provide a few configuration pointers, and it will launch and control VLC via a telnet connection, showing the videos in sequence.  Options include the ability to auto-advance on a time interval (rather than just playing each file fully), randomized order, and playing a random segment within the video (as well as the ability to specify a front and/or back offset for the choice of the segment, to avoid credits/endings/previews, etc).  
+
+In my setup, I ssh into on a Mac Mini attached to my TV, and has my video library mounted via AFP.  From the ssh command line, I launch the script, which launches the VLC application on the Mini.  I use remote desktop to fullscreen VLC and set the volume.  Usually I set a 25 second interval with randomization and a front offset of 30 with a back offset of 20 (ie the random segment shown will drawn from a time after the first 30% of the movie but before the last 20%).  
+
+The while the script runs, you can issue limited single-key commands:
+    - "n" will advance to the next video
+    - "p" will go back to the previous vidoe (but not necessarily the same segment if you are using random segments)
+    - "m" will "mark" a clip - this causes the path and filename to be written to a log file
+    - "q" quits
+    - "z" quits and kills the VLC application instance
+
+
+To install, I suggest creating a "bin" directory and putting the scripts there.  Open Slideshow.py and set some of the basic configuration parameters near the top of the script (where the log files are stored, default port for telnet control, etc.).  
+
+
+
+Prereqs:
+Python 2.7 (I'm using a separate version in MacPorts)
+VLC
+
+
+Known issues:
+    - debug output displayed by the script indents weirdly (the module I'm using to handle single-key-press detection uses some termios magic that causes this).  I should probably rewrite with ncurses, but haven't had time.
+    - the first video shown is not random.  If you point the script to a large video library, it could take a minute or two to read the data for all the videos before randomizing.  The first video loaded is shown during this process. 
+    - lack of fullscreen, volume controls in script
+
+
+
+
+
+My setup:
+     OS X 10.6.8
+     VLC 2.0.3
+     python 2.7.3
+
